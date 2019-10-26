@@ -1,0 +1,17 @@
+# vim: ft=nginx
+server {
+    listen 443 ssl;
+    server_name hyeon.me;
+
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_certificate /etc/letsencrypt/live/hyeon.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hyeon.me/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/hyeon.me/chain.pem;
+
+    root /home/simnalamburt/services/hyeon.me/public;
+    location /build        { expires 5m; add_header Cache-Control "public"; }
+    location /build/static { expires 1M; add_header Cache-Control "public"; }
+
+    # sake nomu?
+    location /sake { alias /home/simnalamburt/services/sake; }
+}
